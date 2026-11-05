@@ -1,0 +1,48 @@
+name: Build Minecraft Trading Cards JAR
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "MinecraftTradingCards-Complete-Fabric-26.3.zip"
+      - ".github/workflows/build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Set up Gradle 9.7.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.7.1"
+
+      - name: Unpack and build mod
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p project
+          unzip -q MinecraftTradingCards-Complete-Fabric-26.3.zip -d project
+          cd project/MinecraftTradingCards-Complete-Fabric-26.3
+          gradle build --no-daemon --stacktrace
+
+      - name: Upload compiled mod JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: Minecraft-Trading-Cards-Fabric-26.3-JAR
+          path: |
+            project/MinecraftTradingCards-Complete-Fabric-26.3/build/libs/*.jar
+            !project/MinecraftTradingCards-Complete-Fabric-26.3/build/libs/*-sources.jar
+          if-no-files-found: error
+          retention-days: 30

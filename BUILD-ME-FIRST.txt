@@ -1,0 +1,12 @@
+TO BUILD THE REAL .JAR ON WINDOWS
+
+1. Install a Java 25 JDK.
+2. Install IntelliJ IDEA Community Edition.
+3. Extract this ZIP to a normal folder.
+4. Open the extracted folder in IntelliJ IDEA as a Gradle project.
+5. Set the Gradle JVM to Java 25 in Settings > Build Tools > Gradle.
+6. Wait for Gradle sync to finish (internet is required to download Minecraft/Fabric dependencies).
+7. Run the Gradle task: build
+8. Your compiled JAR should appear in build/libs/.
+
+Do not rename the source ZIP to .jar. A real mod JAR must be compiled by Gradle.
